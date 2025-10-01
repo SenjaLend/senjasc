@@ -9,6 +9,7 @@ import {Initializable} from "@openzeppelin/contracts-upgradeable/contracts/proxy
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/contracts/proxy/utils/UUPSUpgradeable.sol";
 import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/contracts/access/AccessControlUpgradeable.sol";
 import {ContextUpgradeable} from "@openzeppelin/contracts-upgradeable/contracts/utils/ContextUpgradeable.sol";
+import {WrappedNative} from "./WrappedNative.sol";
 
 
 contract LendingPoolFactory is
@@ -16,7 +17,8 @@ contract LendingPoolFactory is
     ContextUpgradeable,
     PausableUpgradeable,
     UUPSUpgradeable,
-    AccessControlUpgradeable
+    AccessControlUpgradeable,
+    WrappedNative
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -58,7 +60,6 @@ contract LendingPoolFactory is
     address public lendingPoolDeployer;
     address public protocol;
     address public positionDeployer;
-    address public wNative;
 
     mapping(address => address) public tokenDataStream;
     mapping(address => bool) public operator;

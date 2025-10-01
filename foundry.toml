@@ -15,4 +15,12 @@ remappings = [
     'forge-std/=lib/forge-std/src/'
 ]
 
+[rpc_endpoints]
+celo_mainnet="${CELO_MAINNET}"
+moonbeam_mainnet="${MOONBEAM_MAINNET}"
+base_mainnet="https://base.drpc.org"
+
+[lint]
+exclude_lints = ["mixed-case-variable", "mixed-case-function", "unsafe-typecast"]
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

@@ -34,7 +34,7 @@ interface IFactory {
 
     function oftAddress(address _token) external view returns (address);
 
-    function WKAIA() external view returns (address);
+    function wNative() external view returns (address);
 
     /**
      * @dev Adds a token data stream to the factory
@@ -86,4 +86,6 @@ interface IFactory {
     function setOftAddress(address _token, address _oftAddress) external;
 
     function setPositionDeployer(address _positionDeployer) external;
+
+    function setWNative(address _wNative) external;
 }
