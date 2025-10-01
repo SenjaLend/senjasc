@@ -29,6 +29,8 @@ import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.s
 
 import {USDT2049} from "../src/dstToken/USDT2049.sol";
 import {USDC2049} from "../src/dstToken/USDC2049.sol";
+import {MOCKUSDT} from "../src/mocks/mockusdt.sol";
+import {MOCKWGLMR} from "../src/mocks/mockwglmr.sol";
 
 contract SenjaDeploy is Script, Helper {
     using OptionsBuilder for bytes;
@@ -80,17 +82,17 @@ contract SenjaDeploy is Script, Helper {
         owner = vm.addr(pk);
         vm.startBroadcast(pk);
 
-        // _configureChain();
+        _configureChain();
         // _deployOFT();
         // _setLibraries();
         // _setSendConfig();
         // _setReceiveConfig();
-        _setPeers();
+        // _setPeers();
         // _setEnforcedOptions();
 
         // _deployOracleAdapter();
         // _deployFactory();
-        // _setOFTAddress();
+        _setOFTAddress();
 
         // _logAddresses();
 
@@ -142,36 +144,64 @@ contract SenjaDeploy is Script, Helper {
             oapp2 = address(oftusdc);
             console.log("address public BASE_OFT_USDC_ADAPTER = %s;", address(oftusdc));
         } else {
-            ElevatedMinterBurner elevated = new ElevatedMinterBurner(GLMR_USDT, owner);
-            OFTUSDTadapter oftusdt = new OFTUSDTadapter(GLMR_USDT, address(elevated), endpoint, owner);
+            MOCKUSDT usdt = new MOCKUSDT();
+            console.log("address public GLMR_MOCKUSDT = %s;", address(usdt));
+
+            ElevatedMinterBurner elevated = new ElevatedMinterBurner(address(usdt), owner);
+            OFTUSDTadapter oftusdt = new OFTUSDTadapter(address(usdt), address(elevated), endpoint, owner);
             glmr_oftusdt_adapter = address(oftusdt);
             oapp = address(oftusdt);
+            console.log("address public GLMR_OFT_USDT_ADAPTER = %s;", address(oftusdt));
 
-            elevated = new ElevatedMinterBurner(GLMR_WGLMR, owner);
-            OFTNativeAdapter oftnative = new OFTNativeAdapter(GLMR_WGLMR, address(elevated), endpoint, owner);
-            glmr_oftglmr_adapter = address(oftnative);
-            oapp2 = address(oftnative);
+            MOCKWGLMR wglmr = new MOCKWGLMR();
+            console.log("address public GLMR_MOCKWGLMR = %s;", address(wglmr));
 
-            elevated = new ElevatedMinterBurner(GLMR_WGLMR, owner);
-            oftnative = new OFTNativeAdapter(GLMR_WGLMR, address(elevated), endpoint, owner);
-            gmlr_oftglmr_ori_adapter = address(oftnative);
-            oapp3 = address(oftnative);
+            // elevated = new ElevatedMinterBurner(GLMR_WGLMR, owner);
+            // OFTNativeAdapter oftnative = new OFTNativeAdapter(GLMR_WGLMR, address(elevated), endpoint, owner);
+            // glmr_oftglmr_adapter = address(oftnative);
+            // oapp2 = address(oftnative);
+
+            // elevated = new ElevatedMinterBurner(GLMR_WGLMR, owner);
+            // oftnative = new OFTNativeAdapter(GLMR_WGLMR, address(elevated), endpoint, owner);
+            // gmlr_oftglmr_ori_adapter = address(oftnative);
+            // oapp3 = address(oftnative);
+
+            // ElevatedMinterBurner elevated = new ElevatedMinterBurner(GLMR_USDT, owner);
+            // OFTUSDTadapter oftusdt = new OFTUSDTadapter(GLMR_USDT, address(elevated), endpoint, owner);
+            // glmr_oftusdt_adapter = address(oftusdt);
+            // oapp = address(oftusdt);
+
+            // elevated = new ElevatedMinterBurner(GLMR_WGLMR, owner);
+            // OFTNativeAdapter oftnative = new OFTNativeAdapter(GLMR_WGLMR, address(elevated), endpoint, owner);
+            // glmr_oftglmr_adapter = address(oftnative);
+            // oapp2 = address(oftnative);
+
+            // elevated = new ElevatedMinterBurner(GLMR_WGLMR, owner);
+            // oftnative = new OFTNativeAdapter(GLMR_WGLMR, address(elevated), endpoint, owner);
+            // gmlr_oftglmr_ori_adapter = address(oftnative);
+            // oapp3 = address(oftnative);
         }
     }
 
     function _setLibraries() internal {
-        ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp, eid0, sendLib);
-        ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp, eid1, sendLib);
-        ILayerZeroEndpointV2(endpoint).setReceiveLibrary(oapp, srcEid, receiveLib, gracePeriod);
+        ILayerZeroEndpointV2(endpoint).setSendLibrary(BASE_OFT_USDT_ADAPTER, eid0, sendLib);
+        ILayerZeroEndpointV2(endpoint).setReceiveLibrary(BASE_OFT_USDT_ADAPTER, srcEid, receiveLib, gracePeriod);
 
-        ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp2, eid0, sendLib);
-        ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp2, eid1, sendLib);
-        ILayerZeroEndpointV2(endpoint).setReceiveLibrary(oapp2, srcEid, receiveLib, gracePeriod);
-        if (block.chainid != 8453) {
-            ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp3, eid0, sendLib);
-            ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp3, eid1, sendLib);
-            ILayerZeroEndpointV2(endpoint).setReceiveLibrary(oapp3, srcEid, receiveLib, gracePeriod);
-        }
+        // ILayerZeroEndpointV2(endpoint).setSendLibrary(GLMR_OFT_USDT_ADAPTER, eid0, sendLib);
+        // ILayerZeroEndpointV2(endpoint).setReceiveLibrary(GLMR_OFT_USDT_ADAPTER, srcEid, receiveLib, gracePeriod);
+
+        // ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp, eid0, sendLib);
+        // ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp, eid1, sendLib);
+        // ILayerZeroEndpointV2(endpoint).setReceiveLibrary(oapp, srcEid, receiveLib, gracePeriod);
+
+        // ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp2, eid0, sendLib);
+        // ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp2, eid1, sendLib);
+        // ILayerZeroEndpointV2(endpoint).setReceiveLibrary(oapp2, srcEid, receiveLib, gracePeriod);
+        // if (block.chainid != 8453) {
+        //     ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp3, eid0, sendLib);
+        //     ILayerZeroEndpointV2(endpoint).setSendLibrary(oapp3, eid1, sendLib);
+        //     ILayerZeroEndpointV2(endpoint).setReceiveLibrary(oapp3, srcEid, receiveLib, gracePeriod);
+        // }
     }
 
     function _setSendConfig() internal {
@@ -191,11 +221,13 @@ contract SenjaDeploy is Script, Helper {
         params[1] = SetConfigParam(eid0, ULN_CONFIG_TYPE, encodedUln);
         params[2] = SetConfigParam(eid1, EXECUTOR_CONFIG_TYPE, encodedExec);
         params[3] = SetConfigParam(eid1, ULN_CONFIG_TYPE, encodedUln);
-        ILayerZeroEndpointV2(endpoint).setConfig(oapp, sendLib, params);
-        ILayerZeroEndpointV2(endpoint).setConfig(oapp2, sendLib, params);
-        if (block.chainid != 8453) {
-            ILayerZeroEndpointV2(endpoint).setConfig(oapp3, sendLib, params);
-        }
+        ILayerZeroEndpointV2(endpoint).setConfig(BASE_OFT_USDT_ADAPTER, sendLib, params);
+        // ILayerZeroEndpointV2(endpoint).setConfig(GLMR_OFT_USDT_ADAPTER, sendLib, params);
+        // ILayerZeroEndpointV2(endpoint).setConfig(oapp, sendLib, params);
+        // ILayerZeroEndpointV2(endpoint).setConfig(oapp2, sendLib, params);
+        // if (block.chainid != 8453) {
+        //     ILayerZeroEndpointV2(endpoint).setConfig(oapp3, sendLib, params);
+        // }
     }
 
     function _setReceiveConfig() internal {
@@ -213,18 +245,27 @@ contract SenjaDeploy is Script, Helper {
         params[0] = SetConfigParam(eid0, RECEIVE_CONFIG_TYPE, encodedUln);
         params[1] = SetConfigParam(eid1, RECEIVE_CONFIG_TYPE, encodedUln);
 
-        ILayerZeroEndpointV2(endpoint).setConfig(oapp, receiveLib, params);
-        ILayerZeroEndpointV2(endpoint).setConfig(oapp2, receiveLib, params);
-        if (block.chainid != 8453) {
-            ILayerZeroEndpointV2(endpoint).setConfig(oapp3, receiveLib, params);
-        }
+        ILayerZeroEndpointV2(endpoint).setConfig(BASE_OFT_USDT_ADAPTER, receiveLib, params);
+        // ILayerZeroEndpointV2(endpoint).setConfig(GLMR_OFT_USDT_ADAPTER, receiveLib, params);
+        // ILayerZeroEndpointV2(endpoint).setConfig(oapp, receiveLib, params);
+        // ILayerZeroEndpointV2(endpoint).setConfig(oapp2, receiveLib, params);
+        // if (block.chainid != 8453) {
+        //     ILayerZeroEndpointV2(endpoint).setConfig(oapp3, receiveLib, params);
+        // }
     }
 
     function _setPeers() internal {
-        bytes32 oftPeer = bytes32(uint256(uint160(0xf89eAB4a9A4C87d4a40E1E4E325c3CdA985b0b26)));
-        bytes32 oftPeerX = bytes32(uint256(uint160(0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe)));
-        OFTUSDTadapter(0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe).setPeer(eid1, oftPeer);
-        OFTUSDTadapter(0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe).setPeer(eid0, oftPeerX);
+        bytes32 oftPeer = bytes32(uint256(uint160(BASE_OFT_USDT_ADAPTER)));
+        bytes32 oftPeerX = bytes32(uint256(uint160(GLMR_OFT_USDT_ADAPTER)));
+        OFTUSDTadapter(BASE_OFT_USDT_ADAPTER).setPeer(eid1, oftPeerX);
+        OFTUSDTadapter(BASE_OFT_USDT_ADAPTER).setPeer(eid0, oftPeer);
+        // OFTUSDTadapter(GLMR_OFT_USDT_ADAPTER).setPeer(eid1, oftPeer);
+        // OFTUSDTadapter(GLMR_OFT_USDT_ADAPTER).setPeer(eid0, oftPeerX);
+
+        // bytes32 oftPeer = bytes32(uint256(uint160(0xf89eAB4a9A4C87d4a40E1E4E325c3CdA985b0b26)));
+        // bytes32 oftPeerX = bytes32(uint256(uint160(0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe)));
+        // OFTUSDTadapter(0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe).setPeer(eid1, oftPeer);
+        // OFTUSDTadapter(0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe).setPeer(eid0, oftPeerX);
 
         // bytes32 oftPeer2 = bytes32(uint256(uint160(address(oapp2))));
         // OFTNativeAdapter(oapp2).setPeer(eid0, oftPeer2);
@@ -245,11 +286,12 @@ contract SenjaDeploy is Script, Helper {
         enforcedOptions[0] = EnforcedOptionParam({eid: eid0, msgType: SEND, options: options1});
         enforcedOptions[1] = EnforcedOptionParam({eid: eid1, msgType: SEND, options: options2});
 
-        MyOApp(oapp).setEnforcedOptions(enforcedOptions);
-        MyOApp(oapp2).setEnforcedOptions(enforcedOptions);
-        if (block.chainid != 8453) {
-            MyOApp(oapp3).setEnforcedOptions(enforcedOptions);
-        }
+        MyOApp(GLMR_OFT_USDT_ADAPTER).setEnforcedOptions(enforcedOptions);
+        // MyOApp(oapp).setEnforcedOptions(enforcedOptions);
+        // MyOApp(oapp2).setEnforcedOptions(enforcedOptions);
+        // if (block.chainid != 8453) {
+        //     MyOApp(oapp3).setEnforcedOptions(enforcedOptions);
+        // }
     }
 
     function _deployOracleAdapter() internal {
@@ -295,9 +337,10 @@ contract SenjaDeploy is Script, Helper {
     }
 
     function _setOFTAddress() internal {
-        IFactory(address(proxy)).setOftAddress(GLMR_WGLMR, glmr_oftglmr_adapter);
-        IFactory(address(proxy)).setOftAddress(GLMR_USDT, glmr_oftusdt_adapter);
-        IFactory(address(proxy)).setOftAddress(address(1), glmr_oftglmr_adapter); // GLMR native alias
+        IFactory(0x46638aD472507482B7D5ba45124E93D16bc97eCE).setOftAddress(GLMR_MOCKUSDT, GLMR_OFT_USDT_ADAPTER);
+        // IFactory(address(proxy)).setOftAddress(GLMR_WGLMR, glmr_oftglmr_adapter);
+        // IFactory(address(proxy)).setOftAddress(GLMR_USDT, glmr_oftusdt_adapter);
+        // IFactory(address(proxy)).setOftAddress(address(1), glmr_oftglmr_adapter); // GLMR native alias
     }
 
     function _toDynamicArray(address[2] memory fixedArray) internal pure returns (address[] memory) {
