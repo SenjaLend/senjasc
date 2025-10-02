@@ -28,7 +28,7 @@ Demo Video: https://youtu.be/WQkibVbjAsk
 - **Isolated Pools:** Each asset and market risk is contained to ensure safer lending and allow onboarding of new assets.
 - **Dynamic Risk Management:** Decentralized oracles (API3) provide real-time pricing for efficient liquidation and optimized borrowing limits.
 - **Multi-Asset Support:** Supports ETH, Stablecoins, and other collateral types, with plans for additional assets across LayerZero-supported chains.
-- **Seamless UX:** No need to manually bridge assets — LayerZero handles cross-chain messaging.
+- **Seamless UX:** No need to manually bridge assets, LayerZero handles cross-chain messaging.
 
 ---
 
@@ -46,7 +46,7 @@ Demo Video: https://youtu.be/WQkibVbjAsk
 Check out the [Senja Demo Video](https://youtu.be/WQkibVbjAsk) for a walkthrough of cross-chain borrowing using synthetic tokens.
 
 **Script Example:**
-> “This is the demo video of Senja — a permissionless cross-chain lending protocol built on Moonbeam, a Polkadot parachain. With Senja, when you deposit collateral on Moonbeam, you can borrow synthetic tokens on other chains through LayerZero interoperability. This unlocks seamless cross-chain borrowing without the need for manual bridging. Thanks for watching.”
+> “This is the demo video of Senja, a permissionless cross-chain lending protocol built on Moonbeam, a Polkadot parachain. With Senja, when you deposit collateral on Moonbeam, you can borrow synthetic tokens on other chains through LayerZero interoperability. This unlocks seamless cross-chain borrowing without the need for manual bridging. Thanks for watching.”
 
 ---
 
