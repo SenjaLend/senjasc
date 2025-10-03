@@ -27,7 +27,7 @@ contract Helper {
     address public GLMR_EXECUTOR = 0xEC0906949f88f72bF9206E84764163e24a56a499;
 
     address public GLMR_WGLMR = 0xAcc15dC74880C9944775448304B263D191c6077F;
-    address public GLMR_WETH = 0xFFffFFfF86829AFE1521ad2296719Df3acE8DEd7; // (Celo native bridge)
+    address public GLMR_WETH = 0xFFffFFfF86829AFE1521ad2296719Df3acE8DEd7; 
     address public GLMR_WBTC = 0xfFffFFFf1B4Bb1ac5749F73D866FfC91a3432c47;
     address public GLMR_USDT = 0xFFFFFFfFea09FB06d082fd1275CD48b191cbCD1d;
     address public GLMR_USDC = 0xFFfffffF7D2B0B761Af01Ca8e25242976ac0aD7D;
