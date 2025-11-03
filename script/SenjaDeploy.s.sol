@@ -90,7 +90,7 @@ contract SenjaDeploy is Script, Helper {
         // _setPeers();
         // _setEnforcedOptions();
 
-        // _deployOracleAdapter();
+        _deployOracleAdapter();
         // _deployFactory();
         _setOFTAddress();
 
@@ -330,14 +330,21 @@ contract SenjaDeploy is Script, Helper {
         lendingPoolRouterDeployer.setFactory(address(proxy));
 
         IFactory(address(proxy)).setWNative(GLMR_WGLMR);
-        IFactory(address(proxy)).addTokenDataStream(GLMR_USDT, usdt_usd_adapter);
-        IFactory(address(proxy)).addTokenDataStream(GLMR_WGLMR, glmr_usd_adapter);
-        IFactory(address(proxy)).addTokenDataStream(GLMR_WGLMR, glmr_usd_adapter);
-        IFactory(address(proxy)).addTokenDataStream(address(1), glmr_usd_adapter); // GLMR native alias
+        // IFactory(address(proxy)).addTokenDataStream(GLMR_USDT, usdt_usd_adapter);
+        // IFactory(address(proxy)).addTokenDataStream(GLMR_WGLMR, glmr_usd_adapter);
+        // IFactory(address(proxy)).addTokenDataStream(GLMR_WGLMR, glmr_usd_adapter);
+        // IFactory(address(proxy)).addTokenDataStream(address(1), glmr_usd_adapter); // GLMR native alias
+        IFactory(address(proxy)).addTokenDataStream(GLMR_MOCKUSDT, usdt_usd_adapter);
+        IFactory(address(proxy)).addTokenDataStream(GLMR_MOCKWGLMR, glmr_usd_adapter);
     }
 
     function _setOFTAddress() internal {
         IFactory(0x46638aD472507482B7D5ba45124E93D16bc97eCE).setOftAddress(GLMR_MOCKUSDT, GLMR_OFT_USDT_ADAPTER);
+        IFactory(0x46638aD472507482B7D5ba45124E93D16bc97eCE).addTokenDataStream(GLMR_MOCKUSDT, usdt_usd_adapter);
+        IFactory(0x46638aD472507482B7D5ba45124E93D16bc97eCE).addTokenDataStream(GLMR_MOCKWGLMR, glmr_usd_adapter);
+
+        IFactory(0x46638aD472507482B7D5ba45124E93D16bc97eCE).oftAddress(GLMR_MOCKUSDT);
+
         // IFactory(address(proxy)).setOftAddress(GLMR_WGLMR, glmr_oftglmr_adapter);
         // IFactory(address(proxy)).setOftAddress(GLMR_USDT, glmr_oftusdt_adapter);
         // IFactory(address(proxy)).setOftAddress(address(1), glmr_oftglmr_adapter); // GLMR native alias
